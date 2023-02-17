@@ -2,4 +2,5 @@
     export let patron = "";
 </script>
 
-<input type="search" bind:value={patron}> {patron}
+<input type="search" bind:value={patron} placeholder="Buscar..." />
+{patron}
