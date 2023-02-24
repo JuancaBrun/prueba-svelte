@@ -1,16 +1,16 @@
 <script>
     import { onMount } from "svelte";
+    import { data } from "./store";
 
     export let tipo = "insertar";
     export let documento = {};
 
     import { getContext } from "svelte";
-    let URL = getContext("URL");
+    const URL = getContext("URL");
 
     let handler = () => {};
 
     function insertar() {
-        console.log("insertar");
         let opciones = {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -18,40 +18,33 @@
         };
         fetch(URL.articulos, opciones)
             .then((res) => res.json())
-            .then((datos) => console.log(datos))
+            .then((datos) => {
+                $data = [...$data, datos];
+            })
             .catch((error) => console.log(error));
     }
 
     function modificar() {
         console.log("modificar");
-
-        // let opciones = {
-        //     method: "PUT",
-        //     headers: { "Content-Type": "application/json" },
-        //     body: {
-        //         nombre: document.getElementById("nombre").value,
-        //         precio: document.getElementById("precio").value,
-        //     },
-        // };
-        // fetch(URL.articulos, opciones)
-        //     .then((res) => res.json())
-        //     .then((datos) => console.log(datos))
-        //     .catch();
+        let opciones = {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(documento),
+        };
+        fetch(URL.articulos + "/" + documento._id, opciones)
+            .then((res) => res.json())
+            .then((datos) => console.log(datos))
+            .catch();
     }
 
     function eliminar() {
         console.log("eliminar");
         let opciones = {
             method: "DELETE",
-            headers: { "Content-Type": "application/json" },
-            body: {
-                nombre: document.getElementById("nombre").value,
-                precio: document.getElementById("precio").value,
-            },
         };
-        fetch(URL.articulos, opciones)
+        fetch(URL.articulos + "/" + documento._id, opciones)
             .then((res) => res.json())
-            .then((datos) => console.log(datos))
+            .then((datos) => ($data = $data.filter((x) => x._id !== datos._id)))
             .catch();
     }
 

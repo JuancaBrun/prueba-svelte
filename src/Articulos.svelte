@@ -20,14 +20,13 @@
     $: datosFiltrados = $data.filter((articulo) =>
         RegExp(inputBusqueda, "i").test(articulo.nombre)
     );
-    console.log(datosFiltrados);
 </script>
 
 <h1>Artículos</h1>
 <Buscador bind:patron={inputBusqueda} />
 
 <hr />
-<Articulo documento={articuloInsertar}>
+<Articulo articulo={articuloInsertar}>
     <Boton documento={articuloInsertar} />
 </Articulo>
 
